@@ -1,75 +1,73 @@
-# React + TypeScript + Vite
+# emma-ia-front — Interface Utilisateur
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description
 
-Currently, two official plugins are available:
+Application web React pour discuter avec Emma IA, l'assistante d'analyse de crédit de SecureFinance-RAG, et consulter le rapport détaillé généré après une analyse complète. Interface de démonstration publique, responsive, avec Redux pour la gestion d'état de la conversation.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+🔗 **Lien de démonstration :** https://emma-ia-front.vercel.app/ *
 
-## React Compiler
+## Fonctionnalités
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Discussion** : chat en temps réel avec Emma IA, mémoire de conversation côté client (aucune base de données), effet de frappe progressive sur les réponses, chrono et statuts d'attente pendant la génération
+- **Détection automatique de dossier** : coller un JSON de dossier n'importe où dans un message (au début, au milieu, à la fin, avec ou sans texte d'accompagnement) suffit à ce qu'Emma l'exploite pour toute la suite de la conversation
+- **Analyse complète** : sur demande, génère un rapport structuré (métriques officielles, ratios ABD/ATD si applicables, bureau de crédit, dettes, documents fournis/manquants) et propose un accès direct à la page détails
+- **Page Détails** : rendu générique qui s'adapte au type de crédit réellement analysé (marge personnelle, HELOC, prêt personnel, prêt hypothécaire, carte de crédit) sans supposer une structure fixe
+- **Page Comment tester** : explique le fonctionnement de la démo, la structure du JSON attendu, et fournit un JSON d'exemple copiable pour chacun des 5 types de crédit pris en charge
+- **Sidebar de conversations** : historique de session, création de nouvelle discussion avec confirmation si la discussion en cours contient déjà des messages
+- **Interface responsive** : adaptée mobile, tablette et desktop, avec gestion correcte du clavier virtuel mobile
 
-## Expanding the ESLint configuration
+## Stack technique
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+| Composant | Technologie |
+|---|---|
+| Framework | React 18 |
+| Langage | TypeScript |
+| État | Redux Toolkit |
+| Styling | Tailwind CSS v4 |
+| Icônes | React Icons |
+| Routage | React Router |
+| Build | Vite |
+| Déploiement | Vercel |
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Architecture Frontend
 
 ```
-
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+┌─────────────────────────────────────────────────────────────────┐
+│                       React Application                         │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                   │
+│   ┌──────────────┐    ┌──────────────┐    ┌──────────────┐      │
+│   │    Pages     │    │  Components  │    │    Hooks     │      │
+│   │ (Discussion, │    │  (chat,      │    │  (chat API,  │      │
+│   │  Details,    │    │  sidebar,    │    │  typewriter, │      │
+│   │  Instructions)│   │  header)     │    │  timer)      │      │
+│   └──────────────┘    └──────────────┘    └──────────────┘      │
+│          │                   │                   │              │
+│          └───────────────────┴───────────────────┘              │
+│                              │                                  │
+│                     ┌────────▼────────┐                         │
+│                     │   Redux Store   │                         │
+│                     │ (conversation,  │                         │
+│                     │  dossier,       │                         │
+│                     │  analyse)       │                         │
+│                     └────────┬────────┘                         │
+│                              │                                  │
+│                     ┌────────▼────────┐                         │
+│                     │  API Service    │                         │
+│                     │    (fetch)      │                         │
+│                     └─────────────────┘                         │
+│                                                                   │
+└─────────────────────────────────────────────────────────────────┘
+                               │
+                               ▼
+                    ┌──────────────────┐
+                    │  demo-backend    │
+                    │   (Render.com)   │
+                    └────────┬─────────┘
+                             │
+                             ▼
+                    ┌──────────────────┐
+                    │ emma-ia-service  │
+                    │   (Render.com)   │
+                    └──────────────────┘
 ```
