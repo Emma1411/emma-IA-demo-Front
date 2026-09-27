@@ -8,6 +8,7 @@ import {
   FiFileText,
   FiDatabase,
   FiZap,
+  FiCode,
   FiCreditCard,
   FiHome,
   FiTruck,
@@ -58,7 +59,7 @@ export default function InstructionsPage() {
             Cette démo vous permet de discuter directement avec Emma, l'assistante
             d'analyse de crédit de SecureFinance-RAG. Elle structure les dossiers,
             identifie les éléments favorables et les points d'attention, et
-            produit une analyse traçable — sans jamais prendre de décision
+            produit une analyse traçable sans jamais prendre de décision
             automatique à votre place.
           </p>
         </div>
@@ -75,7 +76,7 @@ export default function InstructionsPage() {
           </div>
           <p className="mb-3 text-sm leading-relaxed text-emma-navy">
             Dans la version complète du SaaS, un analyste importe directement les
-            documents du client — pièce d'identité, talons de paie, relevés
+            documents du client pièce d'identité, talons de paie, relevés
             bancaires, etc. Un système d'extraction lit ces documents, structure
             leur contenu et le stocke en base de données, avant de le transmettre
             à Emma sous une forme structurée. C'est cette étape d'extraction qui
@@ -84,27 +85,136 @@ export default function InstructionsPage() {
           </p>
           <p className="text-sm leading-relaxed text-emma-navy">
             <strong>
-              Cette partie du produit — l'upload et l'extraction de documents —
-              est encore en développement.
+              Cette partie du produit l'upload et l'extraction de documents
+              sera dans le SaaS.
             </strong>{" "}
             Cette démo publique vous fait donc sauter directement à l'étape
             suivante : coller le JSON structuré qu'Emma recevrait normalement
             après extraction, pour que vous puissiez tester exactement son
-            raisonnement d'analyse, sans attendre que le pipeline de documents
-            soit terminé.
+            raisonnement d'analyse, sans le pipeline de documents.
           </p>
 
           <div className="mt-4 flex flex-wrap items-center gap-3 text-xs">
             <div className="flex items-center gap-1.5 rounded-lg bg-emma-lighter px-3 py-1.5 text-emma-muted">
-              <FiFileText size={13} /> Documents (à venir)
+              <FiFileText size={13} /> Documents (SaaS)
             </div>
             <span className="text-emma-muted">→</span>
             <div className="flex items-center gap-1.5 rounded-lg bg-emma-lighter px-3 py-1.5 text-emma-muted">
-              <FiDatabase size={13} /> Extraction + BD (à venir)
+              <FiDatabase size={13} /> Extraction + BD (SaaS)
             </div>
             <span className="text-emma-muted">→</span>
             <div className="flex items-center gap-1.5 rounded-lg bg-emma-light px-3 py-1.5 font-semibold text-emma-primary">
               <FiZap size={13} /> JSON → Emma (ce que vous testez ici)
+            </div>
+          </div>
+        </div>
+
+        {/* Structure du JSON */}
+        <div className="mb-8 rounded-2xl border border-emma-border bg-white p-6">
+          <div className="mb-4 flex items-center gap-2">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emma-light text-emma-primary">
+              <FiCode size={16} />
+            </div>
+            <h2 className="text-base font-semibold text-emma-navy">
+              Comprendre la structure du JSON
+            </h2>
+          </div>
+          <p className="mb-4 text-sm text-emma-navy">
+            Chaque dossier suit toujours la même structure, quel que soit le
+            type de crédit. Voici ce que contient chaque clé.
+          </p>
+
+          <div className="space-y-4">
+            <div className="rounded-xl border-l-4 border-emma-primary bg-emma-lighter p-4">
+              <code className="text-xs font-bold text-emma-primary">ticket_id</code>
+              <p className="mt-1 text-xs text-emma-navy">
+                Identifiant du dossier, choisi librement pour le distinguer dans
+                l'historique de conversation (ex. "TEST-HYPO-001").
+              </p>
+            </div>
+
+            <div className="rounded-xl border-l-4 border-emma-primary bg-emma-lighter p-4">
+              <code className="text-xs font-bold text-emma-primary">donnees_dossier</code>
+              <p className="mt-1 text-xs text-emma-navy">
+                Toutes les données brutes du dossier — c'est le seul objet
+                qu'Emma peut réellement lire et analyser.
+              </p>
+              <div className="mt-3 space-y-2 border-l-2 border-emma-border pl-3">
+                <div>
+                  <code className="text-[11px] font-semibold text-emma-navy">
+                    demandeur.id
+                  </code>
+                  <p className="text-[11px] text-emma-muted">
+                    Identifiant anonymisé du client — jamais de nom réel.
+                  </p>
+                </div>
+                <div>
+                  <code className="text-[11px] font-semibold text-emma-navy">demande</code>
+                  <p className="text-[11px] text-emma-muted">
+                    Montant, durée, type de crédit, objectif — et les champs
+                    propres au produit (ex. mise_de_fonds et valeur_propriete
+                    pour un prêt hypothécaire).
+                  </p>
+                </div>
+                <div>
+                  <code className="text-[11px] font-semibold text-emma-navy">revenus</code>
+                  <p className="text-[11px] text-emma-muted">
+                    Montant, périodicité, devise, source (talon_paie,
+                    déclaration...) et statut de vérification.
+                  </p>
+                </div>
+                <div>
+                  <code className="text-[11px] font-semibold text-emma-navy">dettes</code>
+                  <p className="text-[11px] text-emma-muted">
+                    Liste des dettes existantes — type, solde, mensualité,
+                    source et statut de vérification pour chacune.
+                  </p>
+                </div>
+                <div>
+                  <code className="text-[11px] font-semibold text-emma-navy">
+                    dettes_confirmees_completes
+                  </code>
+                  <p className="text-[11px] text-emma-muted">
+                    true si le client a confirmé que la liste ci-dessus est
+                    exhaustive — sinon Emma le signale comme à vérifier.
+                  </p>
+                </div>
+                <div>
+                  <code className="text-[11px] font-semibold text-emma-navy">
+                    historique_credit
+                  </code>
+                  <p className="text-[11px] text-emma-muted">
+                    Score du bureau de crédit, taux de remboursement, nombre de
+                    retards.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-xl border-l-4 border-emma-green bg-emma-lighter p-4">
+              <code className="text-xs font-bold text-emma-green">
+                metriques_officielles_calculees
+              </code>
+              <p className="mt-1 text-xs text-emma-navy">
+                Les ratios déjà calculés par le moteur de règles du système —
+                selon le produit : <code className="text-[11px]">ratio_endettement</code>{" "}
+                (un ratio global) ou <code className="text-[11px]">abd_ratio</code>/
+                <code className="text-[11px]">atd_ratio</code> (pour un produit
+                hypothécaire). Emma les utilise telles quelles ; elle ne les
+                recalcule jamais elle-même.
+              </p>
+            </div>
+
+            <div className="rounded-xl border-l-4 border-amber-400 bg-emma-lighter p-4">
+              <code className="text-xs font-bold text-amber-700">
+                champs_obligatoires_pour_ce_produit
+              </code>
+              <p className="mt-1 text-xs text-emma-navy">
+                La liste des documents réellement requis pour ce type de crédit
+                précis. C'est la seule source qu'Emma utilise pour décider
+                qu'un document manquant est "obligatoire" — retirez-en un pour
+                voir Emma ne plus le signaler comme bloquant.
+              </p>
             </div>
           </div>
         </div>
@@ -117,13 +227,13 @@ export default function InstructionsPage() {
               <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emma-light text-xs font-bold text-emma-primary">
                 1
               </span>
-              Choisissez un type de crédit ci-dessous et copiez son JSON d'exemple.
+             Choisissez un type de crédit ci-dessous et copiez son JSON d'exemple ou construisez votre propre dossier de test en suivant simplement ce même format.
             </li>
             <li className="flex gap-3">
               <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emma-light text-xs font-bold text-emma-primary">
                 2
               </span>
-              Collez-le dans le chat — avec ou sans phrase d'accompagnement,
+              Collez-le dans le chat avec ou sans phrase d'accompagnement,
               n'importe où dans le message.
             </li>
             <li className="flex gap-3">
