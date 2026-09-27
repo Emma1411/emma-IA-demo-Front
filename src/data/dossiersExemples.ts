@@ -1,0 +1,310 @@
+export interface DossierExemple {
+  id: string;
+  titre: string;
+  typeCredit: string;
+  description: string;
+  dossier: Record<string, unknown>;
+}
+
+export const DOSSIERS_EXEMPLES: DossierExemple[] = [
+  {
+    id: "marge-perso",
+    titre: "Marge de crédit personnelle",
+    typeCredit: "marge_credit_personnelle",
+    description: "Non garantie — liquidités, revenu d'emploi vérifié.",
+    dossier: {
+      ticket_id: "TEST-MARGE-PERSO-001",
+      donnees_dossier: {
+        demandeur: { id: "CLIENT-101" },
+        demande: {
+          montant_demande: 15000,
+          type_credit: "marge_credit_personnelle",
+          objectif: "liquidites",
+        },
+        revenus: {
+          revenu_mensuel: 5200,
+          periodicite: "mensuelle",
+          devise: "CAD",
+          type_revenu: "emploi",
+          source: "talon_paie",
+          statut_verification: "verifie",
+          employeur: "LogiSoft Inc.",
+          anciennete_mois: 42,
+        },
+        dettes: [
+          {
+            type: "carte_credit",
+            solde: 2400,
+            mensualite: 110,
+            devise: "CAD",
+            source: "bureau_credit",
+            statut_verification: "verifie",
+          },
+        ],
+        dettes_confirmees_completes: true,
+        historique_credit: {
+          score_bureau: 735,
+          bureau: "Equifax",
+          date_rapport: "2026-09-15",
+          taux_remboursement: 0.98,
+          nombre_retards: 0,
+        },
+      },
+      metriques_officielles_calculees: {
+        ratio_endettement: 0.24,
+        capacite_remboursement: 1350,
+        score_risque: 735,
+      },
+      champs_obligatoires_pour_ce_produit: [
+        "piece_identite",
+        "lettre_emploi",
+        "talons_paie",
+        "releves_bancaires",
+      ],
+    },
+  },
+  {
+    id: "heloc",
+    titre: "Marge de crédit hypothécaire (HELOC)",
+    typeCredit: "marge_credit_hypothecaire",
+    description: "Garantie par la propriété — rénovation, valeur nette.",
+    dossier: {
+      ticket_id: "TEST-HELOC-001",
+      donnees_dossier: {
+        demandeur: { id: "CLIENT-102" },
+        demande: {
+          montant_demande: 75000,
+          type_credit: "marge_credit_hypothecaire",
+          objectif: "renovation_maison",
+          valeur_propriete: 480000,
+          solde_hypothecaire_actuel: 210000,
+        },
+        revenus: {
+          revenu_mensuel: 8100,
+          periodicite: "mensuelle",
+          devise: "CAD",
+          type_revenu: "emploi",
+          source: "talon_paie",
+          statut_verification: "verifie",
+          employeur: "Banque Nationale",
+          anciennete_mois: 96,
+        },
+        dettes: [
+          {
+            type: "hypotheque",
+            solde: 210000,
+            mensualite: 1250,
+            devise: "CAD",
+            source: "bureau_credit",
+            statut_verification: "verifie",
+          },
+        ],
+        dettes_confirmees_completes: true,
+        historique_credit: {
+          score_bureau: 772,
+          bureau: "Equifax",
+          date_rapport: "2026-09-14",
+          taux_remboursement: 0.99,
+          nombre_retards: 0,
+        },
+      },
+      metriques_officielles_calculees: {
+        abd_ratio: 0.26,
+        atd_ratio: 0.34,
+        score_risque: 772,
+      },
+      champs_obligatoires_pour_ce_produit: [
+        "piece_identite",
+        "lettre_emploi",
+        "talons_paie",
+        "acte_propriete",
+        "releve_solde_hypothecaire",
+        "evaluation_fonciere",
+        "comptes_taxes",
+        "assurance_habitation",
+      ],
+    },
+  },
+  {
+    id: "pret-perso",
+    titre: "Prêt personnel",
+    typeCredit: "pret_personnel",
+    description: "Achat véhicule, rénovation — durée fixe, mensualités.",
+    dossier: {
+      ticket_id: "TEST-PRET-PERSO-001",
+      donnees_dossier: {
+        demandeur: { id: "CLIENT-103" },
+        demande: {
+          montant_demande: 26500,
+          duree_demandee_mois: 72,
+          type_credit: "pret_personnel",
+          objectif: "achat_vehicule",
+          sous_type: "auto",
+        },
+        revenus: {
+          revenu_mensuel: 4700,
+          periodicite: "mensuelle",
+          devise: "CAD",
+          type_revenu: "emploi",
+          source: "talon_paie",
+          statut_verification: "verifie",
+          employeur: "Cascades",
+          anciennete_mois: 28,
+        },
+        dettes: [
+          {
+            type: "carte_credit",
+            solde: 1600,
+            mensualite: 75,
+            devise: "CAD",
+            source: "bureau_credit",
+            statut_verification: "verifie",
+          },
+        ],
+        dettes_confirmees_completes: true,
+        historique_credit: {
+          score_bureau: 718,
+          bureau: "TransUnion",
+          date_rapport: "2026-09-16",
+          taux_remboursement: 0.96,
+          nombre_retards: 1,
+        },
+      },
+      metriques_officielles_calculees: {
+        ratio_endettement: 0.28,
+        capacite_remboursement: 1050,
+        score_risque: 718,
+      },
+      champs_obligatoires_pour_ce_produit: [
+        "piece_identite",
+        "lettre_emploi",
+        "talons_paie",
+        "contrat_vente_concessionnaire",
+      ],
+    },
+  },
+  {
+    id: "pret-hypo",
+    titre: "Prêt hypothécaire",
+    typeCredit: "pret_hypothecaire",
+    description: "Achat de propriété — mise de fonds, ratios ABD/ATD.",
+    dossier: {
+      ticket_id: "TEST-HYPO-001",
+      donnees_dossier: {
+        demandeur: { id: "CLIENT-104" },
+        demande: {
+          montant_demande: 385000,
+          duree_demandee_mois: 300,
+          type_credit: "pret_hypothecaire",
+          objectif: "achat_propriete",
+          mise_de_fonds: 95000,
+          valeur_propriete: 480000,
+        },
+        revenus: {
+          revenu_mensuel: 9200,
+          periodicite: "mensuelle",
+          devise: "CAD",
+          type_revenu: "emploi",
+          source: "talon_paie",
+          statut_verification: "verifie",
+          employeur: "Desjardins",
+          anciennete_mois: 84,
+        },
+        dettes: [
+          {
+            type: "carte_credit",
+            solde: 5200,
+            mensualite: 210,
+            devise: "CAD",
+            source: "bureau_credit",
+            statut_verification: "verifie",
+          },
+          {
+            type: "pret_auto",
+            solde: 14500,
+            mensualite: 380,
+            devise: "CAD",
+            source: "bureau_credit",
+            statut_verification: "verifie",
+          },
+        ],
+        dettes_confirmees_completes: true,
+        historique_credit: {
+          score_bureau: 781,
+          bureau: "Equifax",
+          date_rapport: "2026-09-18",
+          taux_remboursement: 0.995,
+          nombre_retards: 0,
+        },
+      },
+      metriques_officielles_calculees: {
+        abd_ratio: 0.29,
+        atd_ratio: 0.37,
+        score_risque: 781,
+      },
+      champs_obligatoires_pour_ce_produit: [
+        "piece_identite",
+        "lettre_emploi",
+        "talons_paie",
+        "historique_90_jours_comptes",
+        "lettre_don",
+        "offre_achat_signee",
+        "fiche_mls",
+      ],
+    },
+  },
+  {
+    id: "carte-credit",
+    titre: "Carte de crédit",
+    typeCredit: "carte_credit",
+    description: "Demande de limite — revenu déclaré, historique bureau.",
+    dossier: {
+      ticket_id: "TEST-CARTE-001",
+      donnees_dossier: {
+        demandeur: { id: "CLIENT-105" },
+        demande: {
+          montant_demande: 10000,
+          type_credit: "carte_credit",
+          objectif: "limite_credit",
+        },
+        revenus: {
+          revenu_mensuel: 4800,
+          periodicite: "mensuelle",
+          devise: "CAD",
+          type_revenu: "emploi",
+          source: "declaration_en_ligne",
+          statut_verification: "declare",
+          employeur: "CGI",
+          loyer_mensuel: 1450,
+        },
+        dettes: [
+          {
+            type: "carte_credit",
+            solde: 980,
+            limite: 2500,
+            mensualite: 50,
+            devise: "CAD",
+            source: "bureau_credit",
+            statut_verification: "verifie",
+          },
+        ],
+        dettes_confirmees_completes: true,
+        historique_credit: {
+          score_bureau: 698,
+          bureau: "TransUnion",
+          date_rapport: "2026-09-17",
+          taux_remboursement: 0.94,
+          nombre_retards: 2,
+        },
+      },
+      metriques_officielles_calculees: {
+        ratio_endettement: 0.19,
+        score_risque: 698,
+      },
+      champs_obligatoires_pour_ce_produit: [
+        "piece_identite",
+        "declaration_revenu_employeur_loyer",
+      ],
+    },
+  },
+];

@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", sans-serif;
+
+  --color-emma-primary: #2f5bea;
+  --color-emma-primaryDark: #1f3fb0;
+  --color-emma-light: #eaf0ff;
+  --color-emma-lighter: #f4f7ff;
+  --color-emma-navy: #1a2233;
+  --color-emma-muted: #6b7480;
+  --color-emma-border: #e6e9ef;
+  --color-emma-green: #178a4c;
+  --color-emma-red: #c22c2c;
+}
+
+/* Squelette de mise en page — même principe que .chat-container */
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  height: var(--vvh, 100dvh);
+  overflow: hidden;
+}
+
+.app-shell__header {
+  flex-shrink: 0; /* jamais compressé, jamais scrollé */
+}
+
+.app-shell__body {
+  flex: 1 1 auto;
+  min-height: 0; /* essentiel : sans ça, flex refuse de rétrécir */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.app-shell__footer {
+  flex-shrink: 0;
+}
+
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+body {
+  background-color: var(--color-emma-lighter);
+  overscroll-behavior: none;
+}
