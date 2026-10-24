@@ -4,7 +4,7 @@
 
 Application web React pour discuter avec Emma IA, l'assistante d'analyse de crédit de SecureFinance-RAG, et consulter le rapport détaillé généré après une analyse complète. Interface de démonstration publique, responsive, avec Redux pour la gestion d'état de la conversation.
 
-🔗 **Lien de démonstration :** https://emma-ia-front.vercel.app/ *
+🔗 **Lien de démonstration :** https://emma-ia-demo-front.vercel.app/ *
 
 ## Fonctionnalités
 
